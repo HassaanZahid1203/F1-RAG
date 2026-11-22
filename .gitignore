@@ -1,0 +1,9 @@
+# secrets
+.env
+# python
+venv/
+__pycache__/
+*.pyc
+# generated files (can be rebuilt with the scripts)
+vectorstore/
+data/processed/cache/
