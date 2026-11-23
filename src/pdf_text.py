@@ -1,9 +1,5 @@
-"""
-PDF text extraction with caching and header/footer cleaning.
-
-Extracting text from a 250-page PDF is slow, so the raw text of every page
-is cached in data/processed/cache/ the first time and reused afterwards.
-"""
+# PDF text extraction with per-page disk cache (data/processed/cache/)
+# and header/footer cleaning.
 import json
 import re
 import hashlib

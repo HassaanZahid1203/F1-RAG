@@ -1,9 +1,5 @@
-"""
-Step 4 check: lists the text models your API keys can use, then sends one
-test question through the model configured in .env.
-
-Run from the project root:   python src/check_llm.py
-"""
+# Step 4 check: list text models available to your API keys, then send one
+# test question to the model set in .env. Run: python src/check_llm.py
 import os
 import sys
 from pathlib import Path

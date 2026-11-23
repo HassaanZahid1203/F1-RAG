@@ -1,17 +1,6 @@
-"""
-Builds eval/questions.csv from the question list below and fills in gold page
-numbers / labels from the chunk file. Re-run after editing the list.
-
-Columns:
-  id, category, question, expected_answer,
-  gold_chunk_ids   chunk ids (article collection) that contain the answer, ';'-separated
-  gold_labels      readable version, e.g. "2026 B1.6.3 (p10)"
-  answerable       yes / no (no = bot should say it can't find it)
-  notes            anything a verifier should know
-  verified         fill in: yes / fixed / removed
-  verifier         fill in: your name
-  correction       fill in: what you changed and why
-"""
+# Builds eval/questions.csv from the list below, filling gold chunk ids/labels
+# from the chunk file. Re-run after editing the list.
+# verified / verifier / correction columns are filled in by hand.
 import csv
 import json
 from pathlib import Path

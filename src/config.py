@@ -1,4 +1,4 @@
-"""Shared settings for indexing, retrieval and the app."""
+# Shared settings for indexing, retrieval and the app.
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent

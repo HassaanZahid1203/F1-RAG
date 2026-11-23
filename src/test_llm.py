@@ -1,8 +1,5 @@
-"""
-Step 4: check that the Groq API key works.
-
-Run from the project root:   python src/test_llm.py
-"""
+# Step 4: check the Groq API key works and list available chat models.
+# Run: python src/test_llm.py
 import os
 import sys
 from pathlib import Path

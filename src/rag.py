@@ -1,41 +1,10 @@
-"""
-Step 5b: retrieval + generation.
-
-    from rag import RAG
-    bot = RAG()                         # article chunks, season filter on
-    result = bot.answer("How long is a drive-through penalty?")
-    print(result["answer"])
-
-Retrieval modes:
-  * dense  (hybrid=False): embedding similarity only
-  * hybrid (hybrid=True):  embeddings + BM25 keyword search, merged with
-                           Reciprocal Rank Fusion. BM25 rewards exact matches on
-                           rare words (driver names, races, article numbers),
-                           which embeddings handle poorly.
-
-Entity-aware filtering (entity_filter=True):
-  Driver names, race names and car numbers in the question are matched against
-  the values stored in the stewards' metadata. Matching stewards' documents are
-  retrieved first with a database filter; the remaining slots are filled by the
-  normal retrieval.
-
-Incident-only entity filtering (entity_incident_only=True, needs entity_filter=True):
-  The filter is applied only when the question is about an incident: it names a
-  driver or car number, or names a race AND uses incident words (penalty, fined,
-  stewards, why, collision...). "Is Monaco different?" no longer triggers it.
-
-Query rewriting (rewrite=True):
-  One LLM call restates the question in the vocabulary of the FIA regulations
-  ("pouring rain" -> "track conditions unsuitable, wet-weather start behind the
-  Safety Car"). Retrieval uses the original question PLUS the rewrite, so names
-  and numbers are never lost. Rewrites are cached in data/processed/rewrite_cache.json.
-
-Season handling (when season_filter=True):
-  * question mentions one season ("in 2025")      -> search only that season
-  * question compares seasons ("what changed", both years, "vs")
-                                                  -> search each season separately
-  * no season mentioned                           -> search DEFAULT_SEASON (2026)
-"""
+# Step 5b: retrieval + generation.  RAG().answer("...")["answer"]
+# Options:
+#   hybrid=True                dense + BM25 merged with RRF (better on names, numbers)
+#   entity_filter=True         stewards' docs matching named drivers/races/car numbers go first
+#   entity_incident_only=True  apply that filter only to incident questions
+#   rewrite=True               LLM restates the query in FIA wording (cached); original kept too
+#   season_filter=True         named season only; each season for comparisons; else DEFAULT_SEASON
 import json
 import re
 import sys

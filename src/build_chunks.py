@@ -1,14 +1,7 @@
-"""
-Step 2: parse every PDF in data/raw and write the chunk files.
-
-Outputs (in data/processed/):
-  chunks_article.jsonl  article-based chunks (main approach)
-  chunks_article_ent.jsonl  same, with entity summaries on stewards' chunks
-  chunks_fixed.jsonl    fixed-size chunks (baseline for comparison)
-  chunk_samples.md      random sample of chunks for manual spot-checking
-
-Run from the project root:   python src/build_chunks.py
-"""
+# Step 2: parse every PDF in data/raw and write to data/processed/:
+#   chunks_article.jsonl (main), chunks_article_ent.jsonl (+ stewards' entity summaries),
+#   chunks_fixed.jsonl (baseline), chunk_samples.md (spot-check sample).
+# Run: python src/build_chunks.py
 import json
 import random
 import re

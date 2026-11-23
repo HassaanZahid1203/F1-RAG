@@ -1,12 +1,5 @@
-"""
-Step 5a: embed every chunk and store it in a local Chroma vector database.
-
-Run from the project root:
-    python src/index.py            # builds both collections
-    python src/index.py article    # builds only one
-
-Re-running rebuilds the collection from scratch.
-"""
+# Step 5a: embed all chunks into a local Chroma DB (rebuilds from scratch).
+# Run: python src/index.py [collection]
 import json
 import sys
 import time

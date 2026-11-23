@@ -1,21 +1,7 @@
-"""
-Small wrapper so the rest of the project can call an LLM without caring
-which provider is behind it. Settings come from the .env file:
-
-    LLM_PROVIDER=gemini            # main model that answers questions
-    LLM_MODEL=gemini-3.5-flash
-    FALLBACK_PROVIDER=groq         # optional: used if the main model stays unavailable
-    FALLBACK_MODEL=openai/gpt-oss-120b
-    GEMINI_API_KEY=...
-    GROQ_API_KEY=...
-
-Temperature is 0 by default so answers are as repeatable as possible.
-Rate limits (429) and temporary server errors (5xx) are retried with a
-growing wait. If the main model is still unavailable after `attempts` tries,
-the fallback model answers instead, and `last_model` records which one did.
-For evaluation runs, create LLM(fallback=False) so every answer comes from
-the same model.
-"""
+# Provider-agnostic LLM wrapper configured via .env (LLM_PROVIDER/LLM_MODEL,
+# optional FALLBACK_PROVIDER/FALLBACK_MODEL, API keys). Temperature 0.
+# Retries 429/5xx with backoff, then uses the fallback; last_model records which answered.
+# Use LLM(fallback=False) in evaluation so every answer comes from one model.
 import os
 import time
 from pathlib import Path

@@ -1,12 +1,6 @@
-"""
-Parser for FIA stewards' decision documents.
-
-Each PDF has a cover page followed by the ruling. A standard ruling has
-labelled fields (No / Driver, Competitor, Session, Fact, Infringement,
-Decision, Reason), which are extracted into structured metadata.
-Long-form documents without those fields (e.g. right-of-review hearings)
-are split into windows of about WINDOW characters.
-"""
+# Parser for FIA stewards' decisions: labelled fields (Driver, Fact, Decision,
+# Reason, ...) become metadata; long-form docs without them are split into
+# ~WINDOW-character windows.
 import re
 from pathlib import Path
 

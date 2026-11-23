@@ -1,18 +1,3 @@
-"""
-Step 5c: Gradio interface for the F1 regulations RAG bot.
-
-Run from the project root:   python app.py
-Then open the local address it prints (usually http://127.0.0.1:7860).
-
-The page is written for people who are not F1 rules experts: plain-language
-labels, one-click example questions, readable source cards, and the retrieval
-settings tucked away under "Advanced settings" (their defaults are the
-best-scoring configuration from the evaluation, eval/results/summary.md).
-
-Look and feel: an original motorsport style (carbon-fibre header, chequered
-flag, timing-tower step numbers, flag-coloured source cards). It deliberately
-uses no official Formula 1 / FIA logos or fonts; this is an unofficial project.
-"""
 import html
 import json
 import sys
@@ -59,7 +44,7 @@ def covered_races():
             for r, _ in sorted(races.items(), key=lambda x: x[1])]
 
 
-# ---------------- formatting helpers ----------------
+#  formatting helpers 
 def season_note(r, season_filter):
     """One plain-English line saying which rulebook the answer is based on."""
     pill = lambda s: f'<span class="season-pill">{s}</span>'
@@ -124,7 +109,7 @@ def format_details(r, season_filter):
     return "\n".join(lines)
 
 
-# ---------------- main handler ----------------
+#  main handler 
 ASK_LABEL, BUSY_LABEL = "Get answer 🏁", "Working… 🚦"
 
 
@@ -183,7 +168,7 @@ def clear():
             gr.update(visible=False))
 
 
-# ---------------- page content ----------------
+#  page content 
 WELCOME = "_Your answer will appear here, along with the exact rules it is based on._"
 
 EXAMPLES = {

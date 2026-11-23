@@ -1,18 +1,8 @@
-"""
-Article-based chunking for the FIA regulations.
-
-Handles two formats:
-  * 2026 ("new"):  ARTICLE B3: TITLE / B3.5 Subsection title / B3.5.3 Rule text...
-  * 2025 ("old"):  Sporting: "40) TITLE" / "40.3 Rule text..."
-                   Technical: "ARTICLE 3: TITLE" / "3.2.2 Title" / rule text...
-
-Each chunk is one numbered clause (e.g. B3.5.3), prefixed with a breadcrumb
-(document > article > subsection) so the chunk is understandable on its own.
-
-A numbered line only starts a new clause if the numbering moves forward
-plausibly. This stops wrapped cross-references such as
-"... under Article\n54.3 the stewards may ..." from being mistaken for a new clause.
-"""
+# Article-based chunking of FIA regulations: one chunk per numbered clause,
+# prefixed with a document > article > subsection breadcrumb.
+# Formats: 2026 "ARTICLE B3:" / "B3.5.3"; 2025 sporting "40)" / "40.3", technical "ARTICLE 3:" / "3.2.2".
+# A numbered line starts a clause only if numbering advances plausibly, so wrapped
+# cross-references ("...Article\n54.3 the stewards...") aren't mistaken for clauses.
 import re
 from pathlib import Path
 
@@ -25,7 +15,7 @@ APPENDIX_WINDOW = 1500  # appendices are split into windows of about this size
 # otherwise they would contaminate answers about the current season.
 EXCLUDED_APPENDIX = re.compile(r"SUBSEQUENT YEARS|FUTURE", re.I)
 
-# --- heading patterns -------------------------------------------------------
+#  heading patterns 
 NEW_ARTICLE = re.compile(r"^ARTICLE\s+([A-F])(\d+)\s*:\s*(.+?)\s*$")
 NEW_CLAUSE = re.compile(r"^([A-F])(\d+(?:\.\d+){1,4})([a-z])?\s+(\S.*)$")
 OLD_ARTICLE_TECH = re.compile(r"^ARTICLE\s+(\d+)\s*:\s*(.+?)\s*$")
@@ -110,7 +100,7 @@ def parse_regulation(pdf_path, season, doc_name, doc_type):
         if excluded_skip:
             continue
 
-        # ---------- article headings ----------
+        #  article headings 
         m_art = NEW_ARTICLE.match(s) if is_new else (OLD_ARTICLE_TECH.match(s) or OLD_ARTICLE_SPORT.match(s))
         if m_art:
             title = m_art.groups()[-1]
@@ -129,7 +119,7 @@ def parse_regulation(pdf_path, season, doc_name, doc_type):
             started = True
             continue
 
-        # ---------- appendix headings ----------
+        #  appendix headings 
         m_app = APPENDIX.match(s)
         app_title = (m_app.group(2) or "").strip() if m_app else ""
         if m_app and started and not TOC_TRAILING_PAGE.search(app_title):
@@ -146,7 +136,7 @@ def parse_regulation(pdf_path, season, doc_name, doc_type):
                 appendix_lines.append((page, s))
             continue
 
-        # ---------- numbered clauses ----------
+        #  numbered clauses 
         m_cl = NEW_CLAUSE.match(s) if is_new else OLD_CLAUSE.match(s)
         if m_cl and current_article:
             if is_new:
@@ -174,12 +164,12 @@ def parse_regulation(pdf_path, season, doc_name, doc_type):
                     unit.lines.append(rest)
                 continue
 
-        # ---------- ordinary text line ----------
+        #  ordinary text line 
         if unit is not None:
             unit.lines.append(s)
     close_unit(); flush_appendix()
 
-    # ---------- turn units into chunks ----------
+    #  turn units into chunks 
     chunks = []
     for u in units:
         if isinstance(u, tuple):                       # appendix

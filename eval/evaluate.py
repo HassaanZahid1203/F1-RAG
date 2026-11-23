@@ -1,24 +1,5 @@
-"""
-Step 7: evaluation.
-
-Run from the project root:
-
-  python eval/evaluate.py retrieval
-      Retrieval metrics for every configuration (local, no API calls, a few minutes).
-
-  python eval/evaluate.py answers closed_book article_dense best
-      Generates answers with the main LLM and grades them with the judge LLM.
-      Slow (free-tier rate limits). Saves after every question; re-running resumes.
-
-  python eval/evaluate.py rejudge Q092 Q045
-      Re-grades the saved answers for those questions (after fixing a reference answer).
-      Uses only the judge model; nothing is regenerated.
-
-  python eval/evaluate.py report
-      Rebuilds eval/results/summary.md from everything saved so far.
-
-Rows of eval/questions.csv whose `verified` column is "removed" are skipped.
-"""
+# Step 7: evaluation - retrieval metrics, answer generation + LLM judging, reports.
+# Run from the project root; see USAGE below. Questions marked verified=removed are skipped.
 import csv
 import json
 import re
@@ -31,6 +12,12 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 RESULTS = ROOT / "eval" / "results"
 RESULTS.mkdir(parents=True, exist_ok=True)
+
+USAGE = """\
+python eval/evaluate.py retrieval               retrieval metrics for all configs (local, no API)
+python eval/evaluate.py answers <config> ...    generate + judge answers (slow; resumes on re-run)
+python eval/evaluate.py rejudge <QID> ...       re-grade saved answers without regenerating
+python eval/evaluate.py report                  rebuild eval/results/summary.md"""
 
 # ---------------------------------------------------------------------------
 # Configurations. Each one is a RAG(...) setup; closed_book uses no retrieval.
@@ -392,4 +379,4 @@ if __name__ == "__main__":
     elif cmd == "report":
         write_report()
     else:
-        print(__doc__)
+        print(USAGE)
